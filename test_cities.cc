@@ -3,7 +3,9 @@
 
 int main()
 {
-    Cities c;
-    std::cin >> c;
+
+    Cities c(std::cin);
+    //Cities c;
+    //std::cin >> c;
     std::cout << c;
 }

@@ -7,6 +7,10 @@
 #include <vector>
 #include <istream>
 #include <ostream>
+#include <string>
+#include <cassert>
+#include <algorithm>
+
 
 // Representation of an ordering of cities
 class Cities {
@@ -18,9 +22,9 @@ class Cities {
     // into the current city ordering.
     using permutation_t = std::vector<unsigned int>;
 
-    friend std::ostream& operator<<(std::ostream& os, const Cities& cities);
+//    friend std::ostream& operator<<(std::ostream& os, const Cities& cities);
 
-    friend std::istream& operator>>(std::istream is, Cities& cities);
+//    friend std::istream& operator>>(std::istream is, Cities& cities);
 
     // Pulls the necessary city data from a stream;
     Cities(std::istream& input);
@@ -41,6 +45,8 @@ class Cities {
     // distance on a plane between their coordinates.
     double total_path_distance(const permutation_t& ordering) const;
 
+    std::vector<coord_t> get_coords() { return city_coords_; }
+
   private:
     // Vector storing the location of each city
     std::vector<coord_t> city_coords_;
@@ -51,6 +57,51 @@ class Cities {
 
 Cities cities_from_file(const char * file_name);
 
-// std::istream& operator>>(std::istream&, Cities&);
+/*
+std::istream& operator>>(std::istream& is, Cities& cities)
+{
+    std::string text(std::istreambuf_iterator<char>(input), {});
+    std::istringstream iterable_string(text);
 
-// std::ostream& operator<<(std::ostream&, Cities&);
+    std::vector<int> raw_coords;
+    std::string line;
+
+    while(std::getline(iterable_string, line, ' ')){
+        raw_coords.push_back(std::stoi(line));
+    }
+
+    cities.city_coords_.clear();
+
+    while(raw_coords.size() > 1){
+        const int x = raw_coords.pop_front();
+        const int y = raw_coords.pop_front();
+        cities.city_coords_.push_back(std::make_pair(x, y));
+    }
+
+    assert(raw_coords.empty());
+
+    return is;
+};
+
+*/
+
+std::ostream& operator<<(std::ostream& os, Cities& cities)
+{
+
+    for(Cities::coord_t c : cities.get_coords()){
+        const int f = c.first;
+        const int s = c.second;
+        os << f << " " << s << std::endl;      
+    }
+
+    return os;
+}
+
+
+
+
+
+
+
+
+

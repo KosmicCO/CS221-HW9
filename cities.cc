@@ -1,54 +1,68 @@
 #include "cities.hh"
+#include <sstream>
+#include <deque>
+#include <fstream>
+#include <string>
+#include <cassert>
+#include <algorithm>
 
-friend std::istream Cities::operator>>(std::istream& is, Cities::Cities& cities)
+Cities::Cities(std::istream& input)
 {
     std::string text(std::istreambuf_iterator<char>(input), {});
     std::istringstream iterable_string(text);
 
-    std::vector<int> raw_coords;
+    std::deque<int> raw_coords;
     std::string line;
 
     while(std::getline(iterable_string, line, ' ')){
         raw_coords.push_back(std::stoi(line));
     }
 
-    cities.city_coords_.clear();
-
     while(raw_coords.size() > 1){
-        const int x = raw_coords.pop_top();
-        const int y = raw_coords.pop_top();
-        cities.city_coords_.push_back(std::make_pair(x, y));
+        const int x = raw_coords.front();
+        raw_coords.pop_front();
+        const int y = raw_coords.front();
+        raw_coords.pop_front();
+        city_coords_.push_back(std::make_pair(x, y));
     }
 
-    assert(raw_coords.isEmpty());
+    assert(raw_coords.empty());
 }
-
-friend std::ostream Cities::operator<<(std::ostream& os, Cities::Cities& cities) const
+/*
+std::ostream& operator<<(std::ostream& os, Cities& cities)
 {
-    std::for_each(cities.city_coords_.cbegin(), cities.city_coords_.cend(), [&os](coord_t coord){
-        os << coord.first() << " " << coord.second() << std::endl; 
-    });
-}
+    for(Cities::coord_t c : cities.city_coords_){
+        os << c;
+    }
 
-Cities::Cities(std::istream * input)
+    return os;
+}
+*/
+
+/*
+Cities::Cities(std::istream& input)
 {
     input >> * this;
 }
+*/
 
-Cities::Cities Cities::reorder(const permutation_t& ordering) const
+Cities Cities::reorder(const permutation_t& ordering) const
 {
-    return nullptr;
+    
+    std::vector<coord_t> v;
+    v.push_back(std::make_pair(ordering.size(), ordering.size()));
+    Cities c(v);
+    return c;
 }
 
 double Cities::total_path_distance(const permutation_t& ordering) const
 {
-    return nullptr;
+    return ordering.size();
 }
 
-Cities::Cities cities_from_file(const char * file_name)
+Cities cities_from_file(const char * file_name)
 {
     std::ifstream input(file_name);
-    input.open();
     assert(input.good());
     Cities cities(input);
     input.close();
