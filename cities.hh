@@ -22,9 +22,9 @@ class Cities {
     // into the current city ordering.
     using permutation_t = std::vector<unsigned int>;
 
-//    friend std::ostream& operator<<(std::ostream& os, const Cities& cities);
+    friend std::ostream& operator<<(std::ostream& os, const Cities& cities);
 
-//    friend std::istream& operator>>(std::istream is, Cities& cities);
+//    friend std::istream& operator>>(std::istream& is, Cities& cities);
 
     // Pulls the necessary city data from a stream;
     Cities(std::istream& input);
@@ -45,7 +45,7 @@ class Cities {
     // distance on a plane between their coordinates.
     double total_path_distance(const permutation_t& ordering) const;
 
-    std::vector<coord_t> get_coords() { return city_coords_; }
+    int num_cities() const { return city_coords_.size(); }
 
   private:
     // Vector storing the location of each city
@@ -57,47 +57,6 @@ class Cities {
 
 Cities cities_from_file(const char * file_name);
 
-void print_cities(Cities& cities);
+Cities::permutation_t random_permutation(unsigned int len);
 
-/*
-std::istream& operator>>(std::istream& is, Cities& cities)
-{
-    std::string text(std::istreambuf_iterator<char>(input), {});
-    std::istringstream iterable_string(text);
-
-    std::vector<int> raw_coords;
-    std::string line;
-
-    while(std::getline(iterable_string, line, ' ')){
-        raw_coords.push_back(std::stoi(line));
-    }
-
-    cities.city_coords_.clear();
-
-    while(raw_coords.size() > 1){
-        const int x = raw_coords.pop_front();
-        const int y = raw_coords.pop_front();
-        cities.city_coords_.push_back(std::make_pair(x, y));
-    }
-
-    assert(raw_coords.empty());
-
-    return is;
-};
-
-*/
-
-
-/*
-std::ostream& operator<<(std::ostream& os, Cities& cities)
-{
-
-    for(Cities::coord_t c : cities.get_coords()){
-        const int f = c.first;
-        const int s = c.second;
-        os << f << " " << s << std::endl;      
-    }
-
-    return os;
-}
-*/
+// std::istream& operator>>(std::istream& is, Cities& cities);

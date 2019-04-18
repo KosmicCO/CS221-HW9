@@ -37,23 +37,6 @@ Cities::Cities(std::istream& input)
 
     assert(raw_coords.empty());
 }
-/*
-std::ostream& operator<<(std::ostream& os, Cities& cities)
-{
-    for(Cities::coord_t c : cities.city_coords_){
-        os << c;
-    }
-
-    return os;
-}
-*/
-
-/*
-Cities::Cities(std::istream& input)
-{
-    input >> * this;
-}
-*/
 
 Cities Cities::reorder(const permutation_t& ordering) const
 {
@@ -106,11 +89,49 @@ Cities cities_from_file(const char * file_name)
     return cities;
 }
 
-void print_cities(Cities& cities)
+std::ostream& operator<<(std::ostream& os, const Cities& cities)
 {
-    for(Cities::coord_t c : cities.get_coords()){
+    for(Cities::coord_t c : cities.city_coords_){
         const int f = c.first;
         const int s = c.second;
-        std::cout << f << " " << s << std::endl;
+        os << f << " " << s << std::endl;
     }
+
+    return os;
 }
+
+
+/*
+std::istream& operator>>(std::istream& is, Cities& cities)
+{
+    Cities c(is);
+    cities = c;
+    return is; 
+}
+*/
+
+Cities::permutation_t random_permutation(unsigned int len)
+{
+    Cities::permutation_t permute;
+    for(unsigned int i = 0; i < len; i++){
+        permute.push_back(i);
+    }
+
+    std::random_shuffle(permute.begin(), permute.end());
+    return permute;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
