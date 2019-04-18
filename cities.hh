@@ -10,7 +10,7 @@
 #include <string>
 #include <cassert>
 #include <algorithm>
-
+#include <iostream>
 
 // Representation of an ordering of cities
 class Cities {
@@ -57,6 +57,8 @@ class Cities {
 
 Cities cities_from_file(const char * file_name);
 
+void print_cities(Cities& cities);
+
 /*
 std::istream& operator>>(std::istream& is, Cities& cities)
 {
@@ -85,6 +87,8 @@ std::istream& operator>>(std::istream& is, Cities& cities)
 
 */
 
+
+/*
 std::ostream& operator<<(std::ostream& os, Cities& cities)
 {
 
@@ -96,12 +100,4 @@ std::ostream& operator<<(std::ostream& os, Cities& cities)
 
     return os;
 }
-
-
-
-
-
-
-
-
-
+*/
