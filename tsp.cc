@@ -24,4 +24,6 @@ int main(int argc, char ** argv)
             std::cout << i << "\t" << dist << std::endl;
         }
     }
+
+    std::cout << c.reorder(lowest) << std::endl;
 }
