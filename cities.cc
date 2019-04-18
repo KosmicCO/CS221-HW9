@@ -65,6 +65,13 @@ Cities Cities::reorder(const permutation_t& ordering) const
     return c;
 }
 
+double dist(Cities::coord_t a, Cities::coord_t b)
+{
+    const double xdif = static_cast<double>(a.first - b.first);
+    const double ydif = static_cast<double>(a.second - b.second);
+    return std::sqrt(xdif * xdif + ydif * ydif);
+}
+
 double Cities::total_path_distance(const permutation_t& ordering) const
 {
 
@@ -72,18 +79,22 @@ double Cities::total_path_distance(const permutation_t& ordering) const
         return 0;
     }
 
-    std::vector<std::pair<double, coord_t>> last_length;
+    std::vector<Cities::coord_t> permuted;
 
     for(const auto i : ordering){
-        last_length.push_back(std::make_pair(0, city_coords_[i]));
+        permuted.push_back(city_coords_[i]);
     }
 
-    return std::accumulate(last_length.cbegin(), last_length.cend(), last_length.back(),
-        [](std::pair<double, coord_t> a, std::pair<double, coord_t> b){
-            const double xdif = static_cast<double>(a.second.first - b.second.first);
-            const double ydif = static_cast<double>(a.second.second - b.second.second);
-            return std::sqrt(xdif * xdif + ydif * ydif) + a.first + b.first;
-        }).first;
+    coord_t previous = permuted.back();
+
+    auto add_dist = [&previous](double d, Cities::coord_t n){
+        const double dist_new = dist(previous, n) + d;
+        previous = n;
+        return dist_new;
+    };
+
+    const double sum = std::accumulate(permuted.cbegin(), permuted.cend(), static_cast<double>(0), add_dist);
+    return sum;
 }
 
 Cities cities_from_file(const char * file_name)
